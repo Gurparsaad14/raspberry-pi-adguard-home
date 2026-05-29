@@ -78,7 +78,7 @@ After booting the Raspberry Pi, I connected to it remotely using SSH from my Win
 ssh gurparsaad@192.168.1.12
 ```
 
-![SSH Terminal](images/ssh-terminal.png)
+![SSH Terminal](images/ssh-terminal-wp.png)
 
 This allowed me to manage the Raspberry Pi through the Linux command line.
 
