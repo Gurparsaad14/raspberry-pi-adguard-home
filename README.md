@@ -1,5 +1,3 @@
-# raspberry-pi-adguard-home
-
 # Raspberry Pi Zero 2 W - Network Wide Ad Blocking with AdGuard Home
 
 ## Overview
@@ -74,28 +72,23 @@ sudo apt update
 curl -s -S -L https://raw.githubusercontent.com/AdguardTeam/AdguardHome/master/scripts/install.sh | sh -s -- -v
 ```
 
-AdGuard Home was then installed and configured as the DNS server for the network.
+AdGuard Home was then installed and configured as the network's DNS server.
 
 ---
 
 # Router Configuration
 
-To ensure all devices on the home network used AdGuard Home automatically, the router DNS settings were updated to point to the Raspberry Pi.
-
-This project also introduced concepts such as:
-
-* DHCP
-* DNS servers
-* Static IPs
-* DHCP reservations
+To ensure all devices on the home network automatically use AdGuard Home, the router's DNS settings were updated to point to the Raspberry Pi.
 
 A DHCP reservation was configured so the Raspberry Pi would always keep the same IP address on the network.
 
+![ISP Home Page](images/ISP Home Page.png)
+![DHCP Reservation](images/DHCP Reservation.png)
 ---
 
 # Secure DNS Configuration
 
-As part of the setup, secure DNS features were configured including:
+As part of the setup, secure DNS features were configured, including:
 
 * DNS-over-HTTPS (DoH)
 * DNSSEC
@@ -162,13 +155,7 @@ Some future ideas for expanding this project include:
 
 # Screenshots
 
-(Add screenshots here)
-
-* AdGuard Dashboard
-* Raspberry Pi setup
-* SSH/WSL terminal session
-* Router DNS configuration
-* Query statistics dashboard
+![AdGuard Dashboard](images/Adguard Home Dashboard.png)
 
 ---
 
@@ -176,5 +163,5 @@ Some future ideas for expanding this project include:
 
 This project was a great hands-on introduction to networking, Linux, DNS infrastructure, and home lab environments.
 
-It also showed how much can be learned by repurposing older hardware and building practical real-world projects.
+It also showed how much can be learned by repurposing older hardware and building practical, real-world projects.
 
