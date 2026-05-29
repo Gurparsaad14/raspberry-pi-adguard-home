@@ -31,8 +31,6 @@ Instead of blocking ads on individual devices through browser extensions, this s
 
 * Raspberry Pi OS Lite
 * AdGuard Home
-* Windows Subsystem for Linux (WSL)
-
 ---
 
 # Initial Setup
@@ -50,9 +48,9 @@ The Raspberry Pi Imager was used to:
 
 ---
 
-# Remote Access with SSH & WSL
+# Remote Access with SSH
 
-After booting the Raspberry Pi, I connected to it remotely using SSH through WSL on my Windows PC.
+After booting the Raspberry Pi, I connected to it remotely using SSH through my Windows PC.
 
 # Change this!!! (need more data from home)
 ```bash
