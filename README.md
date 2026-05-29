@@ -1,95 +1,128 @@
-# Raspberry Pi Zero 2 W - Network Wide Ad Blocking with AdGuard Home
+# Raspberry Pi Zero 2 W - Network-Wide Ad Blocking with AdGuard Home
 
 ## Overview
 
 This project involved repurposing an old Raspberry Pi Zero 2 W into a network-wide ad blocker using AdGuard Home.
 
-The main goal of the project was to gain more hands-on experience with:
+The goal was to gain hands-on experience with networking, DNS, DHCP, Linux, router configuration, and secure DNS technologies while building something useful for my home network.
 
-* Networking
-* DNS & DHCP
-* Linux
-* Router configuration
-* Secure DNS
-* Infrastructure concepts
-
-Instead of blocking ads on individual devices through browser extensions, this setup filters DNS requests at the network level, allowing all connected devices on the home network to benefit from centralised ad and tracker blocking.
+Instead of blocking ads on individual devices through browser extensions, this setup filters DNS requests at the network level, allowing all connected devices to benefit from centralised ad and tracker blocking.
 
 ---
 
-# Hardware & Software Used
+## Project Result
 
-## Hardware
+![AdGuard Dashboard](images/adguard-home.png)
+
+Over the last 7 days, the AdGuard Home instance processed:
+
+* **394,381 DNS queries**
+* **64,410 queries blocked**
+* **16% block rate**
+* **21 ms average processing time**
+* **5+ active devices protected**
+
+These results show how DNS-level filtering can reduce advertising and tracking requests across a home network while maintaining low latency.
+
+---
+
+## Architecture
+
+![Network Diagram](images/network-diagram.png)
+
+The router is configured to send DNS requests to the Raspberry Pi, which runs AdGuard Home. AdGuard filters unwanted ad/tracker domains locally, then forwards allowed DNS queries to upstream providers using secure DNS.
+
+---
+
+## Hardware & Software Used
+
+**Hardware**
 
 * Raspberry Pi Zero 2 W
-* microSD Card
-* Power Supply
-* Home Router
-* PC/Desktop
+* microSD card
+* Power supply
+* Home router
+* Windows PC
 
-## Software
+**Software**
 
 * Raspberry Pi OS Lite
 * AdGuard Home
----
-
-# Initial Setup
-
-## 1. Installing Raspberry Pi OS Lite
-
-I used Raspberry Pi OS Lite for a lightweight headless setup without a desktop environment.
-
-The Raspberry Pi Imager was used to:
-
-* Flash Raspberry Pi OS Lite to the microSD card
-* Enable SSH
-* Configure WiFi credentials
-* Configure login credentials
+* Windows PowerShell
+* SSH
 
 ---
 
-# Remote Access with SSH
+## Hardware Setup
 
-After booting the Raspberry Pi, I connected to it remotely using SSH through my Windows PC.
+![Raspberry Pi](images/pi.jpg)
 
-# Change this!!! (need more data from home)
+The Raspberry Pi Zero 2 W was used as a lightweight DNS filtering server for the home network.
+
+---
+
+## Setup Process
+
+Raspberry Pi OS Lite was used for a headless setup without a desktop environment.
+
+Using Raspberry Pi Imager, I configured:
+
+* Raspberry Pi OS Lite
+* SSH access
+* WiFi credentials
+* Login credentials
+
+After booting the Raspberry Pi, I connected to it remotely using SSH from my Windows PC:
+
 ```bash
-ssh pi@raspberrypi-ip
+ssh gurparsaad@192.168.1.12
 ```
 
-This allowed me to manage the Raspberry Pi entirely through the Linux terminal.
+![SSH Terminal](images/ssh-terminal.png)
+
+This allowed me to manage the Raspberry Pi through the Linux command line.
 
 ---
 
-# Installing AdGuard Home
+## Installing AdGuard Home
 
-The Raspberry Pi was updated before installing AdGuard Home.
+The Raspberry Pi was updated before installing AdGuard Home:
 
 ```bash
 sudo apt update
 curl -s -S -L https://raw.githubusercontent.com/AdguardTeam/AdguardHome/master/scripts/install.sh | sh -s -- -v
 ```
 
-AdGuard Home was then installed and configured as the network's DNS server.
+AdGuard Home was then installed and configured as the network’s DNS server.
 
 ---
 
-# Router Configuration
+## Router Configuration
 
-To ensure all devices on the home network automatically use AdGuard Home, the router's DNS settings were updated to point to the Raspberry Pi.
+To make the setup network-wide, the router’s DNS settings were updated so connected devices would use the Raspberry Pi as their DNS server.
 
-A DHCP reservation was configured so the Raspberry Pi would always keep the same IP address on the network.
+![Router Overview](images/isp-home-page.png)
 
-![ISP Home Page](images/ISP Home Page.png)
-![DHCP Reservation](images/DHCP Reservation.png)
+A DHCP reservation was also configured so the Raspberry Pi would always receive the same IP address.
+
+![DHCP Reservation](images/dhcp-reservation.png)
+
+This helped me understand:
+
+* DNS
+* DHCP
+* DHCP reservations
+* Static IP concepts
+* Network-wide DNS filtering
+
 ---
 
-# Secure DNS Configuration
+## Secure DNS
 
-As part of the setup, secure DNS features were configured, including:
+As part of the setup, I explored secure DNS features including:
 
-* DNS-over-HTTPS (DoH)
-* DNSSEC
+* **DNS-over-HTTPS (DoH):** encrypts DNS queries between AdGuard Home and upstream DNS providers.
+* **DNSSEC:** helps verify that DNS responses are authentic and have not been tampered with.
 
 Upstream DNS providers explored included:
 
@@ -97,69 +130,75 @@ Upstream DNS providers explored included:
 * Cloudflare
 * Google DNS
 
-This helped improve:
+---
 
-* Privacy
-* Security
-* DNS request integrity
+## Results
+
+| Metric                              |   Value |
+| ----------------------------------- | ------: |
+| DNS Queries Processed               | 394,381 |
+| Queries Blocked                     |  64,410 |
+| Block Rate                          |     16% |
+| Average Processing Time             |   21 ms |
+| Malware / Phishing Requests Blocked |       0 |
+| Adult Websites Blocked              |       0 |
+
+Frequently blocked domains included:
+
+* teams.events.data.microsoft.com
+* settings-win.data.microsoft.com
+* inkwell.femetrics.grammarly.io
 
 ---
 
-# What I Learned
+## What I Learned
 
-Some of the key concepts and technologies I learned more about during this project include:
+This project helped me better understand:
 
-* DNS & DHCP
+* DNS and DHCP
 * Linux terminal usage
 * SSH remote management
-* Router & network configuration
+* Router configuration
 * DNS sinkholes
 * Network-wide filtering
 * Secure DNS technologies
-* Home lab infrastructure concepts
+* Home lab infrastructure
 
-One of the most interesting parts of the project was learning how DNS sinkholes work. AdGuard Home blocks requests to known ad/tracker domains by redirecting them to a controlled IP address such as:
+One of the most interesting concepts was learning how DNS sinkholes work. AdGuard Home blocks requests to known advertising and tracking domains by redirecting them to a controlled address such as:
 
 ```text
 0.0.0.0
 ```
 
-This prevents devices from ever reaching those ad servers.
+This prevents devices from reaching unwanted ad or tracking servers.
 
 ---
 
-# Challenges
+## Challenges
 
-Some of the challenges encountered during the project included:
+Some challenges included:
 
-* Understanding router DNS configuration
+* Understanding router DNS settings
 * Configuring DHCP reservations
 * Learning how devices receive DNS settings
-* Understanding why some ads (such as YouTube ads) are difficult to block using DNS filtering alone
+* Understanding the difference between static routes, static IP addresses, and DHCP reservations
+* Understanding why some ads, such as YouTube ads, are difficult to block with DNS filtering alone
 
 ---
 
-# Future Improvements
+## Future Improvements
 
-Some future ideas for expanding this project include:
-
-* Network-wide VPN setup
-* DNS leak testing
-* Performance optimization
-* Advanced filtering rules
-* Additional home lab networking projects
-
----
-
-# Screenshots
-
-![AdGuard Dashboard](images/adguard-home.png)
+* Configure a network-wide VPN
+* Perform DNS leak testing
+* Benchmark DNS performance
+* Explore advanced filtering rules
+* Add additional home lab services
+* Build a centralised home lab dashboard
 
 ---
 
-# Final Thoughts
+## Final Thoughts
 
-This project was a great hands-on introduction to networking, Linux, DNS infrastructure, and home lab environments.
+This project was a practical introduction to networking, Linux, DNS infrastructure, and home lab environments.
 
-It also showed how much can be learned by repurposing older hardware and building practical, real-world projects.
-
+It showed how a low-cost Raspberry Pi can be repurposed into useful network infrastructure while building hands-on experience with secure DNS, router configuration, and network-wide filtering.
