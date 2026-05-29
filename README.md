@@ -153,7 +153,7 @@ Some future ideas for expanding this project include:
 
 # Screenshots
 
-![AdGuard Dashboard](images/Adguard Home Dashboard.png)
+![AdGuard Dashboard](images/adguard-home.png)
 
 ---
 
